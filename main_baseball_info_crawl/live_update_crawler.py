@@ -45,3 +45,23 @@ def get_today_team_name():
     home_score = info['homeTeamScore']
 
     return away_name, home_name
+
+
+def get_game_status():
+    url = get_today_live_update_url()
+
+    response = requests.get(url)
+    data = json.loads(response.text)
+    
+    game_status = data['result']['game']['statusCode']
+    return game_status
+
+
+def get_current_inning():
+    url = get_today_live_update_url()
+
+    response = requests.get(url)
+    data = json.loads(response.text)
+    
+    current_inning = data['result']['game']['statusInfo']
+    return current_inning
