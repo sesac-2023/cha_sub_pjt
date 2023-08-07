@@ -2,7 +2,7 @@ import time
 from datetime import datetime, timedelta
 from my_team_schedule import has_my_team_game_today
 from pre_game_crawler import get_today_pre_game_info
-from live_update_crawler import get_today_live_update_score, get_today_team_name
+from live_update_crawler import get_today_live_update_score, get_today_team_name, get_game_status, get_current_inning
 from telegram_message_utils import format_lineup_message, format_score_message, send_automated_message
 
 
@@ -14,8 +14,9 @@ def send_today_game_info():
     home_lineup = data['홈팀 라인업'] # list
     message_to_send = format_lineup_message(game_time, stadium, away_name, home_name, away_lineup, home_lineup)
     print('라인업 전송 완료')
-    return send_automated_message(message=message_to_send, disable_web_page_preview=True)
+    return send_automated_message(message=message_to_send)
     
+
 
 
 def send_score_real_time():
@@ -25,7 +26,8 @@ def send_score_real_time():
     away_score, home_score = current_score[away_name], current_score[home_name]
     print('득점 정보 확인 중')
     if score != current_score:
-        message_to_send = format_score_message(away_name, home_name, away_score, home_score)
+        # message_to_send = format_score_message(away_name, home_name, away_score, home_score)
+        message_to_send = f'{get_current_inning()}\n{format_score_message(away_name, home_name, away_score, home_score)}'
         send_automated_message(message=message_to_send)
         print('득점 정보 전송 완료')
         score = current_score  
@@ -62,52 +64,43 @@ def is_to_fetch_lineup(minutes_before_game):
 
 if __name__ == "__main__":
     lineup_sent_60m = False
-    lineup_sent_30m = False
+    lineup_sent_30m = False 
     score = None
+    period = 400
+    on_game = False
     
-    if has_my_team_game_today():
-        while True:
-            if not lineup_sent_60m and is_to_fetch_lineup(60):
-                send_today_game_info()
-                lineup_sent_60m = True
-            period = 400
-            
-            if not lineup_sent_30m and is_to_fetch_lineup(30):
-                send_today_game_info()
-                lineup_sent_30m = True
-            period = 400                            
+    while True:
+        if has_my_team_game_today():
+            print('금일 경기 진행')
+            if on_game == False:
+                period = 400
+                if not lineup_sent_60m and is_to_fetch_lineup(60):
+                    send_today_game_info()
+                    lineup_sent_60m = True
+                
+                if not lineup_sent_30m and is_to_fetch_lineup(30):
+                    send_today_game_info()
+                    lineup_sent_30m = True
 
-            if is_to_fectch_score():
+                if is_to_fectch_score():
+                    print('경기 중')
+                    on_game = True
+                
+            else:
+                period = 10
+                print('득점 확인 중')
                 send_score_real_time()
-            period = 10
 
-            time.sleep(period)
+                if get_game_status() == 'RESULT': # 'BEFORE', 'STARTED', 'RESULT'
+                    send_automated_message(message='경기 종료')
+                    print('경기 종료')
+                    lineup_sent_60m = False
+                    lineup_sent_30m = False
+                    score = None
+                    period = 400
+                    on_game = False
 
+        else:
+            period = 43200 + 60
 
-
-
-
-
-#         # 현재 날짜, 시간 -> 변수에 할당 10분마다 업데이트 time.sleep(600)
-        
-
-#         # 1. 오늘날짜 경기가 시작 전인지 체크
-#         # 경기시작 시간 datetime으로 변환 - 현재 시간과 비교 -> 한 시간 이내, 30분 이내
-#         # 발송했는지 체크 boolean 변수 필요 (1시간, 30분 각각) 
-#         # 현재 시간 > 경기 시간 지나면 boolean변수 초기화 False
-#         # period = 10
-
-
-#         # 2. 오늘날짜 경기가 있다면, 현재 시간이 경기시작 한 시간 전인지
-#         #  - 1시간 전이면 라인업 발송 (30분 전)
-
-
-
-#             # 3. 경기 시작했으면, (10초마다)
-#             #   - 스코어 확인 후 변경사항이 있으면 텔레그램 발송
-#             # time.sleep(10) 변경 -> 변수로 바꾸기 
-#             # 이전 점수 - 현재 점수 비교 후 텔레그램 메세지
-
-
-        
-
+        time.sleep(period)
