@@ -1,12 +1,13 @@
->## **⚾오늘의 야구, 실시간 업데이트**
-[![Python](https://img.shields.io/badge/Python-3.10-blue)](https://www.python.org/)
-[![VSCode](https://img.shields.io/badge/VSCode-1.81-blue)](https://code.visualstudio.com/)
-[![Telegram Bot](https://img.shields.io/badge/Telegram%20Bot-python--telegram--bot-blueviolet)](https://pypi.org/project/python-telegram-bot/)
+## **⚾ 오늘의 야구, 실시간 업데이트**
+
+
 
 긴 경기 시간으로 인해 전체 이닝을 시청하기 어려운 팬들을 위해 개발된 프로젝트입니다.   
 경기 시작 1시간 전과 30분 전에는 경기 및 라인업 정보를 발송하여 원활한 시청을 유도하고,   
-실시간 경기를 시청하지 않아도 중요한 순간을 놓치지 않도록 득점 변동 사항을 즉각 알려줍니다. 
-
+실시간 경기를 시청하지 않아도 중요한 순간을 놓치지 않도록 득점 변동 사항을 즉각 알려줍니다.   
+[![Python](https://img.shields.io/badge/Python-3.10-blue)](https://www.python.org/)
+[![VSCode](https://img.shields.io/badge/VSCode-1.81-blue)](https://code.visualstudio.com/)
+[![Telegram Bot](https://img.shields.io/badge/Telegram%20Bot-python--telegram--bot-blueviolet)](https://pypi.org/project/python-telegram-bot/)  
 .  
 >### Main features
 
@@ -14,7 +15,7 @@
 - 경기 전
     - 1시간 전, 30분 전 : 경기 및 라인업 정보 발송
 - 경기 중
-    - 득점 시 : 변동 사항 실시간 발송 (예시 : '롯데 3 - 2 NC' ) 
+    - 득점 시 : 변동 사항 실시간 발송 (예시 : '8회 초   롯데 3 - 2 NC' ) 
 - 경기 후
     - 경기 종료 알림
 - 텔레그램 메시지 API를 활용한 알림 기능 (카카오톡 서비스 - 검토 필요)
