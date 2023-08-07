@@ -1,4 +1,7 @@
 >## **⚾오늘의 야구, 실시간 업데이트**
+[![Python](https://img.shields.io/badge/Python-3.10-blue)](https://www.python.org/)
+[![VSCode](https://img.shields.io/badge/VSCode-1.81-blue)](https://code.visualstudio.com/)
+[![Telegram Bot](https://img.shields.io/badge/Telegram%20Bot-python--telegram--bot-blueviolet)](https://pypi.org/project/python-telegram-bot/)
 
 긴 경기 시간으로 인해 전체 이닝을 시청하기 어려운 팬들을 위해 개발된 프로젝트입니다.   
 경기 시작 1시간 전과 30분 전에는 경기 및 라인업 정보를 발송하여 원활한 시청을 유도하고,   
